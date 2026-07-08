@@ -2,16 +2,15 @@
 
 "use client";
 
-import { MapContainer, TileLayer } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, Tooltip } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-
-const DEFAULT_CENTER: [number, number] = [-3.7319, -38.5267]; // Fortaleza
+import { DEFAULT_CENTER, DEFAULT_ZOOM } from "@/utils/constants";
 
 export default function MapClient() {
     return (
         <MapContainer
         center={DEFAULT_CENTER}
-        zoom={13}
+        zoom={DEFAULT_ZOOM}
         style={{
             width: "100%",
             height: "100%",
@@ -21,6 +20,12 @@ export default function MapClient() {
                 attribution="© OpenStreetMap contributors"
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
+
+
+            <Marker position={DEFAULT_CENTER}>
+                <Popup>Popup Fortaleza</Popup>
+                <Tooltip>Location name</Tooltip>
+            </Marker>
         </MapContainer>
     );
 }
