@@ -5,10 +5,12 @@
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
+const DEFAULT_CENTER: [number, number] = [-3.7319, -38.5267]; // Fortaleza
+
 export default function MapClient() {
     return (
         <MapContainer
-        center={[-23.55052, -46.633308]}
+        center={DEFAULT_CENTER}
         zoom={13}
         style={{
             width: "100%",

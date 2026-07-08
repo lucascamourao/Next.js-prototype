@@ -1,3 +1,5 @@
+// esse wrapper apenas diz ao Next para carregar o mapa somente no navegador
+
 "use client";
 
 import dynamic from "next/dynamic";

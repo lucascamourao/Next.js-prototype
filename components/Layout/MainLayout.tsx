@@ -1,4 +1,4 @@
-"use client";
+"use client"; // virou client component
 
 import { Layout } from "antd";
 import Sidebar from "../Sidebar/Sidebar";

@@ -12,7 +12,7 @@ export default function Sidebar() {
             theme="light"
             style={{
                 padding: 16,
-                borderRight: "1px solid #f0f0f0",
+                borderRight: "1px solid #b1b1b1",
             }}
         >
             <Title level={4}>Prototype</Title>
