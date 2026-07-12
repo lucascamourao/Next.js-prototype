@@ -1,10 +1,13 @@
 {
   "locations": [
     {
-      "id": 1,
-      "name": "Fortaleza",
-      "lat": -3.7319,
-      "lng": -38.5267
+      "name": "sasa",
+      "description": "hgfg",
+      "type": "tipo1",
+      "lat": -3.7232869238920796,
+      "lng": -38.545899934522225,
+      "id": "VVibr6VsQXM"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

@@ -2,6 +2,7 @@
 
 import { Button, Form, Input, Modal, Select } from "antd";
 import { CreateLocationDto } from "@/types/location";
+import { locationService } from "@/services/locationService";
 
 const locationTypes = [
     { value: 'tipo1', label: 'Tipo 1' },
@@ -23,8 +24,18 @@ export default function CreateLocationModal({
     position,
     onCancel,
 }: CreateLocationModalProps) {
-    function handleSubmit(values: CreateLocationDto) {
-        console.log(values);
+    async function handleSubmit(values: CreateLocationDto) {
+        if (!position) return;
+
+        const location: CreateLocationDto = {
+            ...values,
+            lat: position.lat,
+            lng: position.lng,
+        };
+
+        console.log(location);
+
+        const response = await locationService.create(location);
     }
 
     return(
