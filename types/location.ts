@@ -6,3 +6,9 @@ export interface Location {
   lat: number;
   lng: number;
 }
+
+export interface CreateLocationDto {
+  name: string;
+  description: string;
+  type: string;
+}

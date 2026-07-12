@@ -22,7 +22,7 @@ export default function MapClient() {
         setSelectedPosition({lat, lng});
         setIsModalOpen(true);
     }
-    
+   
     return (
     <>
         <MapContainer
@@ -32,7 +32,7 @@ export default function MapClient() {
                 width: "100%",
                 height: "100%",
             }}
-        >
+        > 
             <TileLayer
                 attribution="© OpenStreetMap contributors"
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
