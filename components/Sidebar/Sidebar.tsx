@@ -1,11 +1,22 @@
 "use client";
 
+import { Tool } from "@/types/tool";
+
 import { Layout, Typography } from "antd";
+import Actions from "./Actions";
 
 const { Sider } = Layout;
 const { Title } = Typography;
 
-export default function Sidebar() {
+interface SidebarProps {
+    selectedTool: Tool;
+    onToolChange: (tool: Tool) => void;
+}
+
+export default function Sidebar({
+    selectedTool,
+    onToolChange,
+}: SidebarProps) {
     return (
         <Sider
             width={300}
@@ -15,9 +26,12 @@ export default function Sidebar() {
                 borderRight: "1px solid #b1b1b1",
             }}
         >
-            <Title level={4}>Prototype</Title>
+            <Title level={4}>Prototype GIS</Title>
 
-            <p>Sidebar</p>
+            <Actions 
+                selectedTool={selectedTool}
+                onToolChange={onToolChange}
+            />
         </Sider>
     );
 }

@@ -11,9 +11,18 @@ import { useEffect, useState } from "react";
 import CreateLocationModal from "../Location/CreateLocationModal";
 import { Location } from "@/types/location";
 import { locationService } from "@/services/locationService";
+import { Tool } from "@/types/tool";
 
-export default function MapClient() {
+interface MapClientProps {
+    selectedTool: Tool;
+}
+
+export default function MapClient({
+    selectedTool,
+}: MapClientProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const [firstSelectedLocationId, setFirstSelectedLocationId] = useState<string | null>(null);
 
     const [selectedPosition, setSelectedPosition] = useState<{
         lat: number;

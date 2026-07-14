@@ -2,6 +2,7 @@
 
 "use client";
 
+import { Tool } from "@/types/tool";
 import dynamic from "next/dynamic";
 
 const MapClient = dynamic(() => import("./MapClient"), {
@@ -9,6 +10,10 @@ const MapClient = dynamic(() => import("./MapClient"), {
   loading: () => <p>Carregando mapa...</p>,
 });
 
-export default function Map() {
-  return <MapClient />;
+interface MapProps {
+  selectedTool: Tool;
+}
+
+export default function Map({selectedTool}: MapProps) {
+  return <MapClient selectedTool={selectedTool}/>;
 }
