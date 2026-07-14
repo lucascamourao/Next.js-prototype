@@ -1,13 +1,30 @@
 {
   "locations": [
     {
-      "name": "sasa",
-      "description": "hgfg",
+      "name": "casa",
+      "description": "dsdada",
       "type": "tipo1",
-      "lat": -3.7232869238920796,
-      "lng": -38.545899934522225,
-      "id": "VVibr6VsQXM"
+      "lat": -3.750009169606265,
+      "lng": -38.47237351946033,
+      "id": "ofTGTp3yvBw"
+    },
+    {
+      "name": "casa 2",
+      "description": "afsfs",
+      "type": "tipo2",
+      "lat": -3.732879618536432,
+      "lng": -38.515128274029124,
+      "id": "Jh6-OO9dkCo"
+    },
+    {
+      "name": "teste",
+      "description": "afscsc",
+      "type": "tipo3",
+      "lat": -3.724314717607823,
+      "lng": -38.545513706615466,
+      "id": "GyFruxZWHn0"
     }
   ],
+  "connections": [],
   "$schema": "./node_modules/json-server/schema.json"
 }

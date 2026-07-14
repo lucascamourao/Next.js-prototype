@@ -10,5 +10,11 @@ export const locationService = {
         console.log("Resposta da API:", response.data);
         
         return response.data;
+    },
+
+    async getAll(): Promise<Location[]> {
+        const response = await api.get("/locations");
+
+        return response.data;
     }
 }

@@ -17,12 +17,14 @@ interface CreateLocationModalProps {
         lng: number;
     } | null;
     onCancel: () => void;
+    onLocationCreated: () => Promise<void>;
 }
 
 export default function CreateLocationModal({
     open,
     position,
     onCancel,
+    onLocationCreated,
 }: CreateLocationModalProps) {
     async function handleSubmit(values: CreateLocationDto) {
         if (!position) return;
@@ -35,7 +37,9 @@ export default function CreateLocationModal({
 
         console.log(location);
 
-        const response = await locationService.create(location);
+        await locationService.create(location);
+        await onLocationCreated();
+        onCancel();
     }
 
     return(

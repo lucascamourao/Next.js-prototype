@@ -7,8 +7,10 @@ import MapEvents from "./MapEvents";
 import "leaflet/dist/leaflet.css";
 import { DEFAULT_CENTER, DEFAULT_ZOOM } from "@/utils/constants";
 import "@/lib/leaflet-icon";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CreateLocationModal from "../Location/CreateLocationModal";
+import { Location } from "@/types/location";
+import { locationService } from "@/services/locationService";
 
 export default function MapClient() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,6 +19,21 @@ export default function MapClient() {
         lat: number;
         lng: number;
     } | null>(null);
+    
+    const [locations, setLocations] = useState<Location[]>([]);
+
+    async function loadLocations() {
+        const data = await locationService.getAll();
+
+        console.log(data);
+
+        setLocations(data);
+    }
+
+    useEffect(() => {
+        loadLocations();
+    }, []);
+
 
     function handleMapClick(lat: number, lng: number) {
         setSelectedPosition({lat, lng});
@@ -40,16 +57,29 @@ export default function MapClient() {
 
             <MapEvents onMapClick={handleMapClick} />
 
-            <Marker position={DEFAULT_CENTER}>
-                <Popup>Popup Fortaleza</Popup>
-                <Tooltip>Location name</Tooltip>
-            </Marker>
+            {locations.map((location) => (
+                <Marker
+                    key={location.id}
+                    position={[location.lat, location.lng]}
+                >
+                    <Popup>
+                        <strong>{location.name}</strong>
+                        <br />
+                        {location.description}
+                    </Popup>
+
+                    <Tooltip>
+                        {location.name}
+                    </Tooltip>
+                </Marker>
+            ))}
         </MapContainer>
 
         <CreateLocationModal
             open={isModalOpen}
             position={selectedPosition}
             onCancel={() => setIsModalOpen(false)}
+            onLocationCreated={loadLocations}
         />
     </>
 );
