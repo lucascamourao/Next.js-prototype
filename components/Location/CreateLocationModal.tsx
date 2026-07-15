@@ -35,8 +35,6 @@ export default function CreateLocationModal({
             lng: position.lng,
         };
 
-        console.log(location);
-
         await locationService.create(location);
         await onLocationCreated();
         onCancel();
