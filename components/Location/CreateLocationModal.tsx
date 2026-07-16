@@ -3,6 +3,7 @@
 import { Button, Form, Input, Modal, Select } from 'antd';
 import { CreateLocationDto } from '@/types/location';
 import { locationService } from '@/services/locationService';
+import { useEffect } from 'react';
 
 const locationTypes = [
   { value: 'tipo1', label: 'Tipo 1' },
@@ -26,6 +27,14 @@ export default function CreateLocationModal({
   onCancel,
   onLocationCreated,
 }: CreateLocationModalProps) {
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (open) {
+      form.resetFields();
+    }
+  }, [open, form]);
+
   async function handleSubmit(values: CreateLocationDto) {
     if (!position) return;
 
@@ -42,7 +51,7 @@ export default function CreateLocationModal({
 
   return (
     <Modal title="Novo Local" open={open} onCancel={onCancel} footer={null}>
-      <Form layout="vertical" onFinish={handleSubmit}>
+      <Form form={form} layout="vertical" onFinish={handleSubmit}>
         <p>Latitude: {position?.lat}</p>
 
         <p>Longitude: {position?.lng}</p>

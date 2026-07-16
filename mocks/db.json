@@ -1,5 +1,109 @@
 {
-  "locations": [],
-  "connections": [],
+  "locations": [
+    {
+      "name": "casa",
+      "description": "desc",
+      "type": "tipo1",
+      "lat": -3.7438425698088107,
+      "lng": -38.47154617309571,
+      "id": "x7GaaxlCOKA"
+    },
+    {
+      "name": "praia",
+      "description": "asad",
+      "type": "tipo2",
+      "lat": -3.7283403396080117,
+      "lng": -38.48982808806096,
+      "id": "xairaZ1wjm8"
+    },
+    {
+      "name": "casa 2",
+      "description": "sasff",
+      "type": "tipo3",
+      "lat": -3.7406736057927046,
+      "lng": -38.51652145385743,
+      "id": "Ia79_zPn7D0"
+    },
+    {
+      "name": "teste",
+      "description": "sasasA",
+      "type": "tipo1",
+      "lat": -3.7443564547850143,
+      "lng": -38.49506378173829,
+      "id": "IOpT2rUtsYs"
+    }
+  ],
+  "connections": [
+    {
+      "sourceId": "Ia79_zPn7D0",
+      "targetId": "xairaZ1wjm8",
+      "id": "vcszFbUCrKQ"
+    },
+    {
+      "sourceId": "Ia79_zPn7D0",
+      "targetId": "IOpT2rUtsYs",
+      "id": "mMaGqv04kBg"
+    }
+  ],
+  "zones": [
+    {
+      "name": "zona 1",
+      "color": "#ff0000",
+      "coordinates": [
+        {
+          "lat": -3.7186618373285456,
+          "lng": -38.57711791992188
+        },
+        {
+          "lat": -3.722430428212428,
+          "lng": -38.52973937988282
+        },
+        {
+          "lat": -3.749666581869195,
+          "lng": -38.53815078735352
+        },
+        {
+          "lat": -3.7522359866240578,
+          "lng": -38.58467102050781
+        }
+      ],
+      "id": "TfxjNhaxUNM"
+    },
+    {
+      "name": "zona 2",
+      "color": "#0000ff",
+      "coordinates": [
+        {
+          "lat": -3.729624966013333,
+          "lng": -38.549308776855476
+        },
+        {
+          "lat": -3.728597178501745,
+          "lng": -38.50982666015626
+        },
+        {
+          "lat": -3.7572034810515973,
+          "lng": -38.50244522094727
+        },
+        {
+          "lat": -3.7697077382906383,
+          "lng": -38.54278564453125
+        },
+        {
+          "lat": -3.759772863625653,
+          "lng": -38.591022491455085
+        },
+        {
+          "lat": -3.731509239996269,
+          "lng": -38.59668731689454
+        },
+        {
+          "lat": -3.7126663186348945,
+          "lng": -38.578319549560554
+        }
+      ],
+      "id": "SSGGrCK9oXA"
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }

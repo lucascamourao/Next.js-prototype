@@ -1,7 +1,7 @@
 // use rfc and tab to create react funcional component
 'use client';
 
-import { MapContainer, TileLayer, Marker, Popup, Tooltip, Polyline } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Tooltip, Polyline, Polygon } from 'react-leaflet';
 import MapEvents from './MapEvents';
 import 'leaflet/dist/leaflet.css';
 import { DEFAULT_CENTER, DEFAULT_ZOOM } from '@/utils/constants';
@@ -13,12 +13,26 @@ import { Connection } from '@/types/connection';
 import { locationService } from '@/services/locationService';
 import { connectionService } from '@/services/connectionService';
 import { Tool } from '@/types/tool';
+import { Coordinate } from '@/types/coordinate';
+import { Zone } from '@/types/zone';
+import { zoneService } from '@/services/zoneService';
+import CreateZoneModal from '../Zone/CreateZoneModal';
 
 interface MapClientProps {
   selectedTool: Tool;
+  drawingCoordinates: Coordinate[];
+  setDrawingCoordinates: React.Dispatch<React.SetStateAction<Coordinate[]>>;
+  isZoneModalOpen: boolean;
+  setIsZoneModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function MapClient({ selectedTool }: MapClientProps) {
+export default function MapClient({
+  selectedTool,
+  drawingCoordinates,
+  setDrawingCoordinates,
+  isZoneModalOpen,
+  setIsZoneModalOpen,
+}: MapClientProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [firstSelectedLocationId, setFirstSelectedLocationId] = useState<string | null>(null);
@@ -31,6 +45,9 @@ export default function MapClient({ selectedTool }: MapClientProps) {
   const [locations, setLocations] = useState<Location[]>([]);
   const [connections, setConnections] = useState<Connection[]>([]);
 
+  const [zones, setZones] = useState<Zone[]>([]);
+
+  // load functions =======================================================
   async function loadLocations() {
     const data = await locationService.getAll();
 
@@ -43,22 +60,47 @@ export default function MapClient({ selectedTool }: MapClientProps) {
     setConnections(data);
   }
 
-  // chamadas no mesmo momento
+  async function loadZones() {
+    const data = await zoneService.getAll();
+
+    setZones(data);
+  }
+
+  // =====================================================================
+
+  // useEffect: chamadas no mesmo momento
   useEffect(() => {
     loadLocations();
     loadConnections();
+    loadZones();
   }, []);
 
+  // handle functions ===================================================
+
   function handleMapClick(lat: number, lng: number) {
-    setSelectedPosition({ lat, lng });
-    setIsModalOpen(true);
+    switch (selectedTool) {
+      case 'zone':
+        handleZoneClick(lat, lng);
+        break;
+      default:
+        setSelectedPosition({ lat, lng });
+        setIsModalOpen(true);
+    }
   }
 
   async function handleLocationClick(locationId: string) {
-    if (selectedTool !== 'connection') {
-      return;
-    }
+    switch (selectedTool) {
+      case 'connection':
+        await handleConnectionClick(locationId);
+        break;
 
+      case 'relation':
+        await handleRelationClick(locationId);
+        break;
+    }
+  }
+
+  async function handleConnectionClick(locationId: string) {
     if (!firstSelectedLocationId) {
       setFirstSelectedLocationId(locationId);
 
@@ -94,6 +136,21 @@ export default function MapClient({ selectedTool }: MapClientProps) {
 
     setFirstSelectedLocationId(null);
   }
+
+  async function handleZoneClick(lat: number, lng: number) {
+    const newCoordinate: Coordinate = { lat, lng };
+
+    // essa forma de atualização funcional evita problemas de concorrência
+    setDrawingCoordinates((previousCoordinates) => [...previousCoordinates, newCoordinate]);
+
+    console.log(drawingCoordinates);
+  }
+
+  async function handleRelationClick(locationId: string) {
+    return;
+  }
+
+  // ====================================================================
 
   return (
     <>
@@ -141,6 +198,7 @@ export default function MapClient({ selectedTool }: MapClientProps) {
 
           return (
             <Polyline
+              key={connection.id}
               positions={[
                 [source?.lat, source?.lng],
                 [target?.lat, target?.lng],
@@ -148,6 +206,20 @@ export default function MapClient({ selectedTool }: MapClientProps) {
             />
           );
         })}
+
+        {drawingCoordinates.length >= 3 && (
+          <Polygon positions={drawingCoordinates} pathOptions={{ dashArray: '5,5' }}></Polygon>
+        )}
+
+        {zones.map((zone) => (
+          <Polygon
+            key={zone.id}
+            positions={zone.coordinates}
+            pathOptions={{
+              color: zone.color,
+            }}
+          />
+        ))}
       </MapContainer>
 
       <CreateLocationModal
@@ -155,6 +227,24 @@ export default function MapClient({ selectedTool }: MapClientProps) {
         position={selectedPosition}
         onCancel={() => setIsModalOpen(false)}
         onLocationCreated={loadLocations}
+      />
+
+      <CreateZoneModal
+        open={isZoneModalOpen}
+        onCancel={() => setIsZoneModalOpen(false)}
+        onZoneCreated={async ({ name, color }) => {
+          await zoneService.create({
+            name,
+            color,
+            coordinates: drawingCoordinates,
+          });
+
+          await loadZones();
+
+          setDrawingCoordinates([]);
+
+          setIsZoneModalOpen(false);
+        }}
       />
     </>
   );

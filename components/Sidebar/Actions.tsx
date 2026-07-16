@@ -4,9 +4,16 @@ import { Button } from 'antd';
 interface ActionProps {
   selectedTool: Tool;
   onToolChange: (tool: Tool) => void;
+  canFinishZone: boolean;
+  onFinishZone: () => void;
 }
 
-export default function Actions({ selectedTool, onToolChange }: ActionProps) {
+export default function Actions({
+  selectedTool,
+  onToolChange,
+  canFinishZone,
+  onFinishZone,
+}: ActionProps) {
   function toggleTool(tool: Tool) {
     onToolChange(selectedTool === tool ? 'none' : tool);
   }
@@ -39,6 +46,12 @@ export default function Actions({ selectedTool, onToolChange }: ActionProps) {
       >
         Relation
       </Button>
+
+      {selectedTool === 'zone' && canFinishZone && (
+        <Button type="primary" onClick={onFinishZone}>
+          Finalizar Zona
+        </Button>
+      )}
     </div>
   );
 }

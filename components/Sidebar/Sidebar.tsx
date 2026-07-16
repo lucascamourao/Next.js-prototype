@@ -11,9 +11,16 @@ const { Title } = Typography;
 interface SidebarProps {
   selectedTool: Tool;
   onToolChange: (tool: Tool) => void;
+  canFinishZone: boolean;
+  onFinishZone: (tool: Tool) => void;
 }
 
-export default function Sidebar({ selectedTool, onToolChange }: SidebarProps) {
+export default function Sidebar({
+  selectedTool,
+  onToolChange,
+  canFinishZone,
+  onFinishZone,
+}: SidebarProps) {
   return (
     <Sider
       width={300}
@@ -25,7 +32,12 @@ export default function Sidebar({ selectedTool, onToolChange }: SidebarProps) {
     >
       <Title level={4}>Prototype GIS</Title>
 
-      <Actions selectedTool={selectedTool} onToolChange={onToolChange} />
+      <Actions
+        selectedTool={selectedTool}
+        onToolChange={onToolChange}
+        canFinishZone={canFinishZone}
+        onFinishZone={onFinishZone}
+      />
     </Sider>
   );
 }
