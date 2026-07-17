@@ -1,6 +1,6 @@
 # Protótipo SIG
 
-Protótipo desenvolvido com **Next.js**, **React Leaflet**, **React Flow**, **Ant Design** e **JSON Server** para experimentação de funcionalidades de geoprocessamento, manipulação de entidades geográficas e visualização de grafos.
+Protótipo desenvolvido com **Next.js**, **React Leaflet**, **React Flow**, **Ant Design** e **JSON Server** para experimentação de funcionalidades de geoprocessamento, manipulação de entidades geográficas e visualização de grafos. O projeto foi desenvolvido no âmbito de um projeto de pesquisa do Governo Federal voltado à exploração de conceitos de Sistemas de Informação Geográfica (SIG).
 
 ## Tecnologias
 
