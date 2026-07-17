@@ -18,7 +18,7 @@ import { Zone } from '@/types/zone';
 import { zoneService } from '@/services/zoneService';
 import CreateZoneModal from '../Zone/CreateZoneModal';
 import LocationDetailsModal from '../Location/LocationDetailsModal';
-import { pointsInPolygon } from '@/utils/pointInPolygon';
+import { pointsInPolygon } from '@/utils/poinstInPolygon';
 import ZoneDetailsModal from '../Zone/ZoneDetailsModal';
 
 interface MapClientProps {

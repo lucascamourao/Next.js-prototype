@@ -17,7 +17,6 @@ export function pointsInPolygon(point: Coordinate, polygon: Coordinate[]): boole
     if (intersect) {
       inside = !inside;
     }
-
-    return inside;
   }
+  return inside;
 }

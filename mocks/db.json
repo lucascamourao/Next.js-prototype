@@ -1,22 +1,6 @@
 {
   "locations": [
     {
-      "name": "casa",
-      "description": "desc",
-      "type": "tipo1",
-      "lat": -3.7438425698088107,
-      "lng": -38.47154617309571,
-      "id": "x7GaaxlCOKA"
-    },
-    {
-      "name": "praia",
-      "description": "asad",
-      "type": "tipo2",
-      "lat": -3.7283403396080117,
-      "lng": -38.48982808806096,
-      "id": "xairaZ1wjm8"
-    },
-    {
       "name": "casa 2",
       "description": "sasff",
       "type": "tipo3",
@@ -38,60 +22,9 @@
       "sourceId": "Ia79_zPn7D0",
       "targetId": "xairaZ1wjm8",
       "id": "TSNvqU5ZK9I"
-    },
-    {
-      "sourceId": "IOpT2rUtsYs",
-      "targetId": "x7GaaxlCOKA",
-      "id": "oBkcOBot4xY"
     }
   ],
   "zones": [
-    {
-      "name": "zone 3",
-      "color": "#00ff00",
-      "coordinates": [
-        {
-          "lat": -3.738189815174382,
-          "lng": -38.54172103431308
-        },
-        {
-          "lat": -3.7587451115043513,
-          "lng": -38.46512143441053
-        },
-        {
-          "lat": -3.8128717340405798,
-          "lng": -38.4926011115056
-        },
-        {
-          "lat": -3.7912900055233947,
-          "lng": -38.585688517665204
-        }
-      ],
-      "id": "AIcsVzmx4Yc"
-    },
-    {
-      "name": "sadaas",
-      "color": "#0000ff",
-      "coordinates": [
-        {
-          "lat": -3.7505180880430418,
-          "lng": -38.586704749935265
-        },
-        {
-          "lat": -3.755314299464811,
-          "lng": -38.50804417425058
-        },
-        {
-          "lat": -3.8008769889244562,
-          "lng": -38.51044864599639
-        },
-        {
-          "lat": -3.788201894699591,
-          "lng": -38.62036735437673
-        }
-      ],
-      "id": "lw2FUm0GmM4"
-    },
     {
       "name": "zona",
       "color": "#ff0000",
@@ -110,6 +43,25 @@
         }
       ],
       "id": "kIcOf6lDhk4"
+    },
+    {
+      "name": "zona teste",
+      "color": "#00ff00",
+      "coordinates": [
+        {
+          "lat": -3.732879618536432,
+          "lng": -38.53177402777805
+        },
+        {
+          "lat": -3.7363055555295137,
+          "lng": -38.46857077045934
+        },
+        {
+          "lat": -3.7798137874404865,
+          "lng": -38.48213886102503
+        }
+      ],
+      "id": "gjTITCxtmeM"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
