@@ -1,6 +1,6 @@
 # Prototype
 
-Protótipo desenvolvido com **Next.js**, **React Leaflet**, **Ant Design** e **JSON Server** para experimentação de funcionalidades de geoprocessamento e visualização de grafos.
+Protótipo desenvolvido com **Next.js**, **React Leaflet**, **React Flow**, **Ant Design** e **JSON Server** para experimentação de funcionalidades de geoprocessamento, manipulação de entidades geográficas e visualização de grafos.
 
 ## Tecnologias
 
@@ -8,7 +8,7 @@ Protótipo desenvolvido com **Next.js**, **React Leaflet**, **Ant Design** e **J
 - React 19
 - TypeScript
 - Ant Design
-- Leaflet / React Leaflet
+- React Leaflet / Leaflet
 - React Flow
 - Axios
 - JSON Server
@@ -17,19 +17,16 @@ Protótipo desenvolvido com **Next.js**, **React Leaflet**, **Ant Design** e **J
 
 ```
 components/
-├── Flow/
+├── Graph/
 ├── Layout/
 ├── Location/
 ├── Map/
-└── Sidebar/
+├── Relation/
+├── Sidebar/
+└── Zone/
 
 services/
-├── api.ts
-├── locationService.ts
-└── endpoints.ts
-
 types/
-
 utils/
 
 mocks/
@@ -54,8 +51,8 @@ npm install
 
 O projeto utiliza dois servidores:
 
-- Next.js (frontend)
-- JSON Server (API simulada)
+- Frontend (Next.js)
+- API simulada (JSON Server)
 
 ### 1. Inicie a API
 
@@ -88,23 +85,39 @@ http://localhost:3000
 ```bash
 npm run dev       # Executa o frontend
 npm run server    # Executa o JSON Server
-npm run build     # Build de produção
+npm run build     # Gera a build de produção
 npm run start     # Executa a build
 npm run lint      # Executa o ESLint
 ```
 
 ## Funcionalidades implementadas
 
-- ✅ Renderização do mapa utilizando Leaflet
-- ✅ Coordenada inicial configurável
-- ✅ Marcadores personalizados
-- ✅ Popup nos marcadores
-- ✅ Tooltip ao passar o mouse
-- ✅ Cadastro de novos locais
-- ✅ Persistência utilizando JSON Server
-- ✅ Carregamento automático dos locais cadastrados
-- ✅ Traçar linhas entre pontos (Polyline)
-- ✅ Cadastro de zonas (Polygon)
-- ✅ Modal com detalhes do local
-- ✅ Relações entre locais
-- ✅ Grafo utilizando React Flow
+### Locais
+
+- Cadastro de novos locais
+- Visualização dos locais no mapa
+- Modal com informações do local
+- Persistência dos dados utilizando JSON Server
+
+### Zonas
+
+- Criação de zonas por meio de polígonos
+- Visualização das zonas no mapa
+- Listagem dos locais contidos em uma zona utilizando o algoritmo **Ray Casting**
+
+### Relações
+
+- Criação de relações entre dois locais
+- Nomeação das relações
+- Representação das relações por linhas (Polyline)
+- Exibição do nome da relação por meio de Tooltip
+
+### Grafo
+
+- Visualização dos mesmos locais e relações utilizando React Flow
+- Nós arrastáveis
+- Relações representadas como arestas
+
+## Organização
+
+A aplicação foi dividida em componentes independentes para facilitar manutenção e reutilização, enquanto os serviços centralizam a comunicação com a API simulada através do Axios.
