@@ -2,7 +2,7 @@
 
 import { Location } from '@/types/location';
 import { Zone } from '@/types/zone';
-import { Descriptions, List, Modal } from 'antd';
+import { Card, Descriptions, Empty, Flex, Modal } from 'antd';
 import DescriptionsItem from 'antd/es/descriptions/Item';
 
 interface ZoneDetailsModalProps {
@@ -34,12 +34,19 @@ export default function ZoneDetailsModal({
 
           <br />
 
-          <List
-            header={<strong>Locais dentro da zona</strong>}
-            dataSource={locationsInsideZone}
-            locale={{ emptyText: 'Nenhum local encontrado. ' }}
-            renderItem={(location) => <List.Item>{location.name}</List.Item>}
-          />
+          <Card title="Locais dentro da zona">
+            {locationsInsideZone.length === 0 ? (
+              <Empty description="Nenhum local encontrado." />
+            ) : (
+              <Flex vertical gap={8}>
+                {locationsInsideZone.map((location) => (
+                  <Card key={location.id} size="small">
+                    {location.name}
+                  </Card>
+                ))}
+              </Flex>
+            )}
+          </Card>
         </>
       )}
     </Modal>
