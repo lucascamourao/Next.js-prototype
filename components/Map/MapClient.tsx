@@ -105,12 +105,18 @@ export default function MapClient({
 
   function handleMapClick(lat: number, lng: number) {
     switch (selectedTool) {
+      case 'location':
+        setSelectedPosition({ lat, lng });
+        setIsModalOpen(true);
+        break;
+
       case 'zone':
         handleZoneDrawingClick(lat, lng);
         break;
+
       default:
-        setSelectedPosition({ lat, lng });
-        setIsModalOpen(true);
+        // connection, relation e none
+        break;
     }
   }
 
@@ -124,13 +130,16 @@ export default function MapClient({
         await handleRelationClick(location.id);
         break;
 
-      default:
+      case 'none':
         const currLocation = locationsMap[location.id];
 
         if (!currLocation) return;
 
         setSelectedLocation(location);
         setIsLocationDetailsOpen(true);
+
+      default:
+        break;
     }
   }
 
@@ -256,7 +265,11 @@ export default function MapClient({
               color: zone.color,
             }}
             eventHandlers={{
-              click: () => handleZoneClick(zone),
+              click: () => {
+                if (selectedTool === 'none') {
+                  handleZoneClick(zone);
+                }
+              },
             }}
           />
         ))}

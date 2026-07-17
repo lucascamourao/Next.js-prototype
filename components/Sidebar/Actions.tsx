@@ -27,6 +27,13 @@ export default function Actions({
       }}
     >
       <Button
+        type={selectedTool === 'location' ? 'primary' : 'default'}
+        onClick={() => toggleTool('location')}
+      >
+        Location
+      </Button>
+
+      <Button
         type={selectedTool === 'connection' ? 'primary' : 'default'}
         onClick={() => toggleTool('connection')}
       >
