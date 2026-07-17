@@ -103,11 +103,8 @@ npm run lint      # Executa o ESLint
 - ✅ Cadastro de novos locais
 - ✅ Persistência utilizando JSON Server
 - ✅ Carregamento automático dos locais cadastrados
-
-## Funcionalidades em desenvolvimento
-
-- ⏳ Traçar linhas entre pontos (Polyline)
-- ⏳ Cadastro de zonas (Polygon)
-- ⏳ Modal com detalhes do local
-- ⏳ Relações entre locais
-- ⏳ Grafo utilizando React Flow
+- ✅ Traçar linhas entre pontos (Polyline)
+- ✅ Cadastro de zonas (Polygon)
+- ✅ Modal com detalhes do local
+- ✅ Relações entre locais
+- ✅ Grafo utilizando React Flow
