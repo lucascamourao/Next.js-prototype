@@ -17,6 +17,9 @@ import { Coordinate } from '@/types/coordinate';
 import { Zone } from '@/types/zone';
 import { zoneService } from '@/services/zoneService';
 import CreateZoneModal from '../Zone/CreateZoneModal';
+import LocationDetailsModal from '../Location/LocationDetailsModal';
+import { pointsInPolygon } from '@/utils/pointInPolygon';
+import ZoneDetailsModal from '../Zone/ZoneDetailsModal';
 
 interface MapClientProps {
   selectedTool: Tool;
@@ -47,6 +50,15 @@ export default function MapClient({
 
   const [zones, setZones] = useState<Zone[]>([]);
 
+  const [selectedZone, setSelectedZone] = useState<Zone | null>(null);
+  const [locationsInsideZone, setLocationsInsideZone] = useState<Location[]>([]);
+  const [isZoneDetailsOpen, setIsZoneDetailsOpen] = useState(false);
+
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
+  const [isLocationDetailsOpen, setIsLocationDetailsOpen] = useState(false);
+
+  const locationsMap = Object.fromEntries(locations.map((location) => [location.id, location]));
+
   // load functions =======================================================
   async function loadLocations() {
     const data = await locationService.getAll();
@@ -75,12 +87,26 @@ export default function MapClient({
     loadZones();
   }, []);
 
+  // useEffect para limpar desenho temporário de zona
+  useEffect(() => {
+    if (selectedTool !== 'zone') {
+      setDrawingCoordinates([]);
+    }
+  }, [selectedTool, setDrawingCoordinates]);
+
+  // useEffect para limpar connection temporário (após troca de ação)
+  useEffect(() => {
+    if (selectedTool !== 'connection') {
+      setFirstSelectedLocationId(null);
+    }
+  }, [selectedTool, setFirstSelectedLocationId]);
+
   // handle functions ===================================================
 
   function handleMapClick(lat: number, lng: number) {
     switch (selectedTool) {
       case 'zone':
-        handleZoneClick(lat, lng);
+        handleZoneDrawingClick(lat, lng);
         break;
       default:
         setSelectedPosition({ lat, lng });
@@ -88,24 +114,29 @@ export default function MapClient({
     }
   }
 
-  async function handleLocationClick(locationId: string) {
+  async function handleLocationClick(location: Location) {
     switch (selectedTool) {
       case 'connection':
-        await handleConnectionClick(locationId);
+        await handleConnectionClick(location.id);
         break;
 
       case 'relation':
-        await handleRelationClick(locationId);
+        await handleRelationClick(location.id);
         break;
+
+      default:
+        const currLocation = locationsMap[location.id];
+
+        if (!currLocation) return;
+
+        setSelectedLocation(location);
+        setIsLocationDetailsOpen(true);
     }
   }
 
   async function handleConnectionClick(locationId: string) {
     if (!firstSelectedLocationId) {
       setFirstSelectedLocationId(locationId);
-
-      console.log('Primeiro ponto: ', locationId);
-
       return;
     }
 
@@ -125,8 +156,6 @@ export default function MapClient({
       return;
     }
 
-    console.log('Segundo ponto:', locationId);
-
     await connectionService.create({
       sourceId: firstSelectedLocationId,
       targetId: locationId,
@@ -137,17 +166,32 @@ export default function MapClient({
     setFirstSelectedLocationId(null);
   }
 
-  async function handleZoneClick(lat: number, lng: number) {
+  function handleZoneDrawingClick(lat: number, lng: number) {
     const newCoordinate: Coordinate = { lat, lng };
 
     // essa forma de atualização funcional evita problemas de concorrência
     setDrawingCoordinates((previousCoordinates) => [...previousCoordinates, newCoordinate]);
-
-    console.log(drawingCoordinates);
   }
 
   async function handleRelationClick(locationId: string) {
     return;
+  }
+
+  function handleZoneClick(zone: Zone) {
+    const pointsInside = locations.filter((location) =>
+      pointsInPolygon(
+        {
+          lat: location.lat,
+          lng: location.lng,
+        },
+        zone.coordinates
+      )
+    );
+
+    console.log(pointsInside);
+    setSelectedZone(zone);
+    setLocationsInsideZone(pointsInside);
+    setIsZoneDetailsOpen(true);
   }
 
   // ====================================================================
@@ -174,23 +218,16 @@ export default function MapClient({
             key={location.id}
             position={[location.lat, location.lng]}
             eventHandlers={{
-              click: () => handleLocationClick(location.id),
+              click: () => handleLocationClick(location),
             }}
           >
-            <Popup>
-              <strong>{location.name}</strong>
-              <br />
-              {location.description}
-            </Popup>
-
             <Tooltip>{location.name}</Tooltip>
           </Marker>
         ))}
 
         {connections.map((connection) => {
-          const source = locations.find((location) => location.id === connection.sourceId);
-
-          const target = locations.find((location) => location.id === connection.targetId);
+          const source = locationsMap[connection.sourceId];
+          const target = locationsMap[connection.targetId];
 
           if (!source || !target) {
             return null;
@@ -200,14 +237,14 @@ export default function MapClient({
             <Polyline
               key={connection.id}
               positions={[
-                [source?.lat, source?.lng],
-                [target?.lat, target?.lng],
+                [source.lat, source.lng],
+                [target.lat, target.lng],
               ]}
             />
           );
         })}
 
-        {drawingCoordinates.length >= 3 && (
+        {selectedTool === 'zone' && drawingCoordinates.length >= 3 && (
           <Polygon positions={drawingCoordinates} pathOptions={{ dashArray: '5,5' }}></Polygon>
         )}
 
@@ -217,6 +254,9 @@ export default function MapClient({
             positions={zone.coordinates}
             pathOptions={{
               color: zone.color,
+            }}
+            eventHandlers={{
+              click: () => handleZoneClick(zone),
             }}
           />
         ))}
@@ -245,6 +285,19 @@ export default function MapClient({
 
           setIsZoneModalOpen(false);
         }}
+      />
+
+      <LocationDetailsModal
+        open={isLocationDetailsOpen}
+        location={selectedLocation}
+        onCancel={() => setIsLocationDetailsOpen(false)}
+      />
+
+      <ZoneDetailsModal
+        open={isZoneDetailsOpen}
+        zone={selectedZone}
+        locationsInsideZone={locationsInsideZone}
+        onCancel={() => setIsZoneDetailsOpen(false)}
       />
     </>
   );
