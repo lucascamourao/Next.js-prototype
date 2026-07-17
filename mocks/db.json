@@ -22,6 +22,11 @@
       "sourceId": "Ia79_zPn7D0",
       "targetId": "xairaZ1wjm8",
       "id": "TSNvqU5ZK9I"
+    },
+    {
+      "sourceId": "Ia79_zPn7D0",
+      "targetId": "IOpT2rUtsYs",
+      "id": "pvAUOhYvNvg"
     }
   ],
   "zones": [
@@ -62,6 +67,14 @@
         }
       ],
       "id": "gjTITCxtmeM"
+    }
+  ],
+  "relations": [
+    {
+      "name": "entrega para",
+      "sourceId": "Ia79_zPn7D0",
+      "targetId": "IOpT2rUtsYs",
+      "id": "vIIO1bl7bGQ"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

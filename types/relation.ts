@@ -1,12 +1,12 @@
 export interface Relation {
   id: string;
   name: string;
-  sourceId: Location;
-  targetId: Location;
+  sourceId: string;
+  targetId: string;
 }
 
 export interface CreateRelationDto {
   name: string;
-  sourceId: Location;
-  targetId: Location;
+  sourceId: string;
+  targetId: string;
 }

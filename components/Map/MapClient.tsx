@@ -20,6 +20,9 @@ import CreateZoneModal from '../Zone/CreateZoneModal';
 import LocationDetailsModal from '../Location/LocationDetailsModal';
 import { pointsInPolygon } from '@/utils/poinstInPolygon';
 import ZoneDetailsModal from '../Zone/ZoneDetailsModal';
+import { Relation } from '@/types/relation';
+import { relationService } from '@/services/relationService';
+import CreateRelationModal from '../Relation/CreateRelationModal';
 
 interface MapClientProps {
   selectedTool: Tool;
@@ -39,7 +42,6 @@ export default function MapClient({
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [firstSelectedLocationId, setFirstSelectedLocationId] = useState<string | null>(null);
-
   const [selectedPosition, setSelectedPosition] = useState<{
     lat: number;
     lng: number;
@@ -49,7 +51,6 @@ export default function MapClient({
   const [connections, setConnections] = useState<Connection[]>([]);
 
   const [zones, setZones] = useState<Zone[]>([]);
-
   const [selectedZone, setSelectedZone] = useState<Zone | null>(null);
   const [locationsInsideZone, setLocationsInsideZone] = useState<Location[]>([]);
   const [isZoneDetailsOpen, setIsZoneDetailsOpen] = useState(false);
@@ -58,6 +59,16 @@ export default function MapClient({
   const [isLocationDetailsOpen, setIsLocationDetailsOpen] = useState(false);
 
   const locationsMap = Object.fromEntries(locations.map((location) => [location.id, location]));
+
+  const [relations, setRelations] = useState<Relation[]>([]);
+  const [firstSelectedRelationLocationId, setFirstSelectedRelationLocationId] = useState<
+    string | null
+  >(null);
+  const [isRelationModalOpen, setIsRelationModalOpen] = useState(false);
+  const [pendingRelation, setPendingRelation] = useState<{
+    sourceId: string;
+    targetId: string;
+  } | null>(null);
 
   // load functions =======================================================
   async function loadLocations() {
@@ -78,6 +89,12 @@ export default function MapClient({
     setZones(data);
   }
 
+  async function loadRelations() {
+    const data = await relationService.getAll();
+
+    setRelations(data);
+  }
+
   // =====================================================================
 
   // useEffect: chamadas no mesmo momento
@@ -85,6 +102,7 @@ export default function MapClient({
     loadLocations();
     loadConnections();
     loadZones();
+    loadRelations();
   }, []);
 
   // useEffect para limpar desenho temporário de zona
@@ -100,6 +118,13 @@ export default function MapClient({
       setFirstSelectedLocationId(null);
     }
   }, [selectedTool, setFirstSelectedLocationId]);
+
+  useEffect(() => {
+    if (selectedTool !== 'relation') {
+      setFirstSelectedRelationLocationId(null);
+      setPendingRelation(null);
+    }
+  }, [selectedTool]);
 
   // handle functions ===================================================
 
@@ -127,7 +152,7 @@ export default function MapClient({
         break;
 
       case 'relation':
-        await handleRelationClick(location.id);
+        await handleRelationClick(location);
         break;
 
       case 'none':
@@ -150,7 +175,7 @@ export default function MapClient({
     }
 
     if (firstSelectedLocationId === locationId) {
-      console.log('Você escolheu o mesmo ponto!');
+      console.log('Erro: Você escolheu o mesmo ponto!');
       return;
     }
 
@@ -182,8 +207,36 @@ export default function MapClient({
     setDrawingCoordinates((previousCoordinates) => [...previousCoordinates, newCoordinate]);
   }
 
-  async function handleRelationClick(locationId: string) {
-    return;
+  async function handleRelationClick(location: Location) {
+    if (!firstSelectedRelationLocationId) {
+      setFirstSelectedRelationLocationId(location.id);
+      return;
+    }
+
+    if (firstSelectedRelationLocationId === location.id) {
+      console.log('Erro: Você escolheu o mesmo ponto!');
+      return;
+    }
+
+    const relationAlreadyExists = relations.some(
+      (relation) =>
+        (relation.sourceId === firstSelectedRelationLocationId &&
+          relation.targetId === location.id) ||
+        (relation.sourceId === location.id && relation.targetId === firstSelectedRelationLocationId)
+    );
+
+    if (relationAlreadyExists) {
+      console.log('Relação já existe!');
+      return;
+    }
+
+    setPendingRelation({
+      sourceId: firstSelectedRelationLocationId,
+      targetId: location.id,
+    });
+
+    setIsRelationModalOpen(true);
+    setFirstSelectedRelationLocationId(null);
   }
 
   function handleZoneClick(zone: Zone) {
@@ -273,6 +326,38 @@ export default function MapClient({
             }}
           />
         ))}
+
+        {relations.map((relation) => {
+          const source = locationsMap[relation.sourceId];
+          const target = locationsMap[relation.targetId];
+
+          if (!source || !target) {
+            return null;
+          }
+
+          return (
+            <Polyline
+              key={relation.id}
+              positions={[
+                [source.lat, source.lng],
+                [target.lat, target.lng],
+              ]}
+              pathOptions={{
+                color: 'green',
+                weight: 4,
+                dashArray: '8,4',
+              }}
+            >
+              <Tooltip sticky>{relation.name}</Tooltip>
+
+              <Popup>
+                <strong>{relation.name}</strong>
+                <br />
+                {source.name} → {target.name}
+              </Popup>
+            </Polyline>
+          );
+        })}
       </MapContainer>
 
       <CreateLocationModal
@@ -297,6 +382,25 @@ export default function MapClient({
           setDrawingCoordinates([]);
 
           setIsZoneModalOpen(false);
+        }}
+      />
+
+      <CreateRelationModal
+        open={isRelationModalOpen}
+        onCancel={() => setIsRelationModalOpen(false)}
+        onRelationCreated={async ({ name }) => {
+          if (!pendingRelation) return;
+
+          await relationService.create({
+            name,
+            sourceId: pendingRelation.sourceId,
+            targetId: pendingRelation.targetId,
+          });
+
+          await loadRelations();
+
+          setPendingRelation(null);
+          setIsRelationModalOpen(false);
         }}
       />
 
