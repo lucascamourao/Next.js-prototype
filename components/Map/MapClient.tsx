@@ -40,7 +40,6 @@ export default function MapClient({
 }: MapClientProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [firstSelectedLocationId, setFirstSelectedLocationId] = useState<string | null>(null);
   const [selectedPosition, setSelectedPosition] = useState<{
     lat: number;
     lng: number;
