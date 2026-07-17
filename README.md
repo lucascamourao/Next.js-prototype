@@ -1,4 +1,4 @@
-# Prototype
+# Protótipo SIG
 
 Protótipo desenvolvido com **Next.js**, **React Leaflet**, **React Flow**, **Ant Design** e **JSON Server** para experimentação de funcionalidades de geoprocessamento, manipulação de entidades geográficas e visualização de grafos.
 
