@@ -37,13 +37,6 @@ export default function Actions({
       </Button>
 
       <Button
-        type={selectedTool === 'connection' ? 'primary' : 'default'}
-        onClick={() => toggleTool('connection')}
-      >
-        Connection
-      </Button>
-
-      <Button
         type={selectedTool === 'zone' ? 'primary' : 'default'}
         onClick={() => toggleTool('zone')}
       >

@@ -23,18 +23,14 @@
       "lat": -3.729967561583473,
       "lng": -38.487490502212715,
       "id": "id3-qS4m_VI"
-    }
-  ],
-  "connections": [
-    {
-      "sourceId": "Ia79_zPn7D0",
-      "targetId": "xairaZ1wjm8",
-      "id": "TSNvqU5ZK9I"
     },
     {
-      "sourceId": "Ia79_zPn7D0",
-      "targetId": "IOpT2rUtsYs",
-      "id": "pvAUOhYvNvg"
+      "name": "fdssd",
+      "description": "dada",
+      "type": "tipo3",
+      "lat": -3.7318748593391358,
+      "lng": -38.54570388793946,
+      "id": "TwFRQYNuRtc"
     }
   ],
   "zones": [
@@ -75,6 +71,41 @@
         }
       ],
       "id": "gjTITCxtmeM"
+    },
+    {
+      "name": "nome",
+      "color": "#0000ff",
+      "coordinates": [
+        {
+          "lat": -3.7437009460998136,
+          "lng": -38.56664657592774
+        },
+        {
+          "lat": -3.761354082648093,
+          "lng": -38.516864776611335
+        },
+        {
+          "lat": -3.788775720937624,
+          "lng": -38.5451889038086
+        },
+        {
+          "lat": -3.792761244018511,
+          "lng": -38.57368469238282
+        },
+        {
+          "lat": -3.777336749964025,
+          "lng": -38.59222412109376
+        },
+        {
+          "lat": -3.7547136630771987,
+          "lng": -38.60183715820313
+        },
+        {
+          "lat": -3.7314044149928605,
+          "lng": -38.594970703125
+        }
+      ],
+      "id": "atLYxzhc4Uo"
     }
   ],
   "relations": [
@@ -83,6 +114,12 @@
       "sourceId": "Ia79_zPn7D0",
       "targetId": "IOpT2rUtsYs",
       "id": "vIIO1bl7bGQ"
+    },
+    {
+      "name": "entrega para",
+      "sourceId": "TwFRQYNuRtc",
+      "targetId": "Ia79_zPn7D0",
+      "id": "IJWxnQCiuYM"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

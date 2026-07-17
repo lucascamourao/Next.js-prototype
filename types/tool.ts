@@ -1,1 +1,1 @@
-export type Tool = 'none' | 'location' | 'connection' | 'zone' | 'relation';
+export type Tool = 'none' | 'location' | 'zone' | 'relation';

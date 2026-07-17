@@ -9,9 +9,7 @@ import '@/lib/leaflet-icon';
 import { useEffect, useState } from 'react';
 import CreateLocationModal from '../Location/CreateLocationModal';
 import { Location } from '@/types/location';
-import { Connection } from '@/types/connection';
 import { locationService } from '@/services/locationService';
-import { connectionService } from '@/services/connectionService';
 import { Tool } from '@/types/tool';
 import { Coordinate } from '@/types/coordinate';
 import { Zone } from '@/types/zone';
@@ -49,7 +47,6 @@ export default function MapClient({
   } | null>(null);
 
   const [locations, setLocations] = useState<Location[]>([]);
-  const [connections, setConnections] = useState<Connection[]>([]);
 
   const [zones, setZones] = useState<Zone[]>([]);
   const [selectedZone, setSelectedZone] = useState<Zone | null>(null);
@@ -78,12 +75,6 @@ export default function MapClient({
     setLocations(data);
   }
 
-  async function loadConnections() {
-    const data = await connectionService.getAll();
-
-    setConnections(data);
-  }
-
   async function loadZones() {
     const data = await zoneService.getAll();
 
@@ -101,7 +92,6 @@ export default function MapClient({
   // useEffect: chamadas no mesmo momento
   useEffect(() => {
     loadLocations();
-    loadConnections();
     loadZones();
     loadRelations();
   }, []);
@@ -113,13 +103,7 @@ export default function MapClient({
     }
   }, [selectedTool, setDrawingCoordinates]);
 
-  // useEffect para limpar connection temporário (após troca de ação)
-  useEffect(() => {
-    if (selectedTool !== 'connection') {
-      setFirstSelectedLocationId(null);
-    }
-  }, [selectedTool, setFirstSelectedLocationId]);
-
+  // useEffect para limpar relação temporária (antes da confirmação do formulário)
   useEffect(() => {
     if (selectedTool !== 'relation') {
       setFirstSelectedRelationLocationId(null);
@@ -141,17 +125,13 @@ export default function MapClient({
         break;
 
       default:
-        // connection, relation e none
+        // relation e none
         break;
     }
   }
 
   async function handleLocationClick(location: Location) {
     switch (selectedTool) {
-      case 'connection':
-        await handleConnectionClick(location.id);
-        break;
-
       case 'relation':
         await handleRelationClick(location);
         break;
@@ -167,38 +147,6 @@ export default function MapClient({
       default:
         break;
     }
-  }
-
-  async function handleConnectionClick(locationId: string) {
-    if (!firstSelectedLocationId) {
-      setFirstSelectedLocationId(locationId);
-      return;
-    }
-
-    if (firstSelectedLocationId === locationId) {
-      console.log('Erro: Você escolheu o mesmo ponto!');
-      return;
-    }
-
-    const connectionAlreadyExists = connections.some(
-      (connection) =>
-        (connection.sourceId === firstSelectedLocationId && connection.targetId === locationId) ||
-        (connection.sourceId === locationId && connection.targetId === firstSelectedLocationId)
-    );
-
-    if (connectionAlreadyExists) {
-      console.log('Conexão já existe! ');
-      return;
-    }
-
-    await connectionService.create({
-      sourceId: firstSelectedLocationId,
-      targetId: locationId,
-    });
-
-    await loadConnections();
-
-    setFirstSelectedLocationId(null);
   }
 
   function handleZoneDrawingClick(lat: number, lng: number) {
@@ -289,25 +237,6 @@ export default function MapClient({
             <Tooltip>{location.name}</Tooltip>
           </Marker>
         ))}
-
-        {connections.map((connection) => {
-          const source = locationsMap[connection.sourceId];
-          const target = locationsMap[connection.targetId];
-
-          if (!source || !target) {
-            return null;
-          }
-
-          return (
-            <Polyline
-              key={connection.id}
-              positions={[
-                [source.lat, source.lng],
-                [target.lat, target.lng],
-              ]}
-            />
-          );
-        })}
 
         {selectedTool === 'zone' && drawingCoordinates.length >= 3 && (
           <Polygon positions={drawingCoordinates} pathOptions={{ dashArray: '5,5' }}></Polygon>
