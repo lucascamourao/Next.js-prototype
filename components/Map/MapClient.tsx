@@ -23,6 +23,7 @@ import ZoneDetailsModal from '../Zone/ZoneDetailsModal';
 import { Relation } from '@/types/relation';
 import { relationService } from '@/services/relationService';
 import CreateRelationModal from '../Relation/CreateRelationModal';
+import MapResize from './MapResize';
 
 interface MapClientProps {
   selectedTool: Tool;
@@ -272,6 +273,8 @@ export default function MapClient({
           attribution="© OpenStreetMap contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+
+        <MapResize />
 
         <MapEvents onMapClick={handleMapClick} />
 

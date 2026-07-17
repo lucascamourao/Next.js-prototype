@@ -1,5 +1,6 @@
 import { Tool } from '@/types/tool';
 import { Button } from 'antd';
+import { useRouter } from 'next/navigation';
 
 interface ActionProps {
   selectedTool: Tool;
@@ -14,6 +15,8 @@ export default function Actions({
   canFinishZone,
   onFinishZone,
 }: ActionProps) {
+  const router = useRouter();
+
   function toggleTool(tool: Tool) {
     onToolChange(selectedTool === tool ? 'none' : tool);
   }
@@ -59,6 +62,8 @@ export default function Actions({
           Finalizar Zona
         </Button>
       )}
+
+      <Button onClick={() => router.push('/graph')}>Graph</Button>
     </div>
   );
 }

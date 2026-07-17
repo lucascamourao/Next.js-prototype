@@ -1,7 +1,89 @@
 {
-  "locations": [],
-  "connections": [],
-  "zones": [],
-  "relations": [],
+  "locations": [
+    {
+      "name": "casa 2",
+      "description": "sasff",
+      "type": "tipo3",
+      "lat": -3.7406736057927046,
+      "lng": -38.51652145385743,
+      "id": "Ia79_zPn7D0"
+    },
+    {
+      "name": "teste",
+      "description": "sasasA",
+      "type": "tipo1",
+      "lat": -3.7443564547850143,
+      "lng": -38.49506378173829,
+      "id": "IOpT2rUtsYs"
+    },
+    {
+      "name": "local 434",
+      "description": "ldskads",
+      "type": "tipo2",
+      "lat": -3.729967561583473,
+      "lng": -38.487490502212715,
+      "id": "id3-qS4m_VI"
+    }
+  ],
+  "connections": [
+    {
+      "sourceId": "Ia79_zPn7D0",
+      "targetId": "xairaZ1wjm8",
+      "id": "TSNvqU5ZK9I"
+    },
+    {
+      "sourceId": "Ia79_zPn7D0",
+      "targetId": "IOpT2rUtsYs",
+      "id": "pvAUOhYvNvg"
+    }
+  ],
+  "zones": [
+    {
+      "name": "zona",
+      "color": "#ff0000",
+      "coordinates": [
+        {
+          "lat": -3.7251712114542026,
+          "lng": -38.520111533337044
+        },
+        {
+          "lat": -3.7383611113050037,
+          "lng": -38.483700961186074
+        },
+        {
+          "lat": -3.754634090910913,
+          "lng": -38.53024466426587
+        }
+      ],
+      "id": "kIcOf6lDhk4"
+    },
+    {
+      "name": "zona teste",
+      "color": "#00ff00",
+      "coordinates": [
+        {
+          "lat": -3.732879618536432,
+          "lng": -38.53177402777805
+        },
+        {
+          "lat": -3.7363055555295137,
+          "lng": -38.46857077045934
+        },
+        {
+          "lat": -3.7798137874404865,
+          "lng": -38.48213886102503
+        }
+      ],
+      "id": "gjTITCxtmeM"
+    }
+  ],
+  "relations": [
+    {
+      "name": "entrega para",
+      "sourceId": "Ia79_zPn7D0",
+      "targetId": "IOpT2rUtsYs",
+      "id": "vIIO1bl7bGQ"
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }
